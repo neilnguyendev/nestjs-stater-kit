@@ -1,0 +1,50 @@
+version: '3.5'
+
+networks:
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+          gateway: 172.21.5.254
+
+services:
+  mysql:
+    build:
+      context: ./docker/mysql
+      args:
+        - MYSQL_VERSION=latest
+    container_name: mysql
+    restart: always
+    volumes:
+      - ./../data/mysql:/var/lib/mysql
+      - ./docker/mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      backend:
+        ipv4_address: 172.21.0.11
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=UTC
+
+  api:
+    build:
+      context: ./
+      dockerfile: ./docker/api/Dockerfile
+    container_name: api
+    depends_on:
+      - mysql
+    restart: always
+    networks:
+      backend:
+        ipv4_address: 172.21.0.12
+    ports:
+      - 127.0.0.1:${PORT}:${PORT}
+    volumes:
+      - ./:/var/www
+      - /var/www/node_modules
+    environment:
+      - MYSQL_HOST=172.21.0.11
