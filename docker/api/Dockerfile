@@ -2,13 +2,13 @@ FROM node:16.17-alpine
 
 WORKDIR /var/www
 
-COPY package*.json ./
+COPY package.json ./
+COPY yarn.lock ./
 
 RUN npm cache clean --force \
-  && npm install -g node-gyp \
-  && npm install --unsafe-perm=true
+  && npm install -g yarn \
+  && yarn
 
 COPY . .
 
-CMD ["sh", "-c", "npm run migration:run && npm run build && npm run start:prod"]
-#CMD ["sh", "-c", "npm start"]
+CMD ["sh", "-c", "yarn migrate && yarn prebuild && yarn build && yarn start:prod"]
