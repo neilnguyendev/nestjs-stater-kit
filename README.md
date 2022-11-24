@@ -88,3 +88,5 @@ $ yarn migration:create src/database/migrations/<name-of-migration>
 # Revert migration
 $ yarn migration:revert 
 ```
+
+Reference: https://github.com/NarHakobyan/awesome-nest-boilerplate
