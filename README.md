@@ -4,7 +4,9 @@
   <a href="https://docs.nestjs.com/" target="_blank"><img src="https://img.shields.io/badge/NestJS-v9-blueviolet.svg?logo=Nestjs"></a>
 </p>
 
+<p style="font-style: italic; text-align: center;">"
 Nest (NestJS) is a framework for building efficient, scalable Node.js server-side applications.
+</p>
 
 This project helps you:
 
